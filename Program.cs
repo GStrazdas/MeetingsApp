@@ -6,6 +6,7 @@
  *                              *
  * ******************************/
 
+using MeetingsApp;
 using static MeetingsApp.DataTypes;
 
 bool run = true;
@@ -41,8 +42,8 @@ do
                 Console.WriteLine("meetings list");
                 break;
             case 6:
-                Console.WriteLine("Select category");
-                SelectCategory();
+                Console.WriteLine("Create meeting");
+                var meeting = Meeting.Create();
                 break;
             case 0:
                 run = false;
@@ -57,15 +58,3 @@ do
 while(run);
 
 Console.WriteLine("Finished");
-
-void SelectCategory()
-{
-    Console.WriteLine("Please select meeting category:" +
-                "\n0 - CodeMonkey" +
-                "\n1 - Hub," +
-                "\n2 - Short" +
-                "\n3 - TeamBuilding):");
-    Category category = (Category)int.Parse(Console.ReadLine());
-    Console.WriteLine(category);
-    Console.ReadLine();
-}
