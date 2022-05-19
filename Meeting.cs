@@ -9,28 +9,29 @@ namespace MeetingsApp
 {
     internal class Meeting
     {
-        private readonly string _name;
-        private readonly Person _responsiblePerson;
-        private readonly string _description;
-        private readonly Category _category;
-        private readonly MeetingType _type;
-        private readonly DateOnly _startDate;
-        private readonly DateOnly _endDate;
-        private List<Person> Participants;
+        public String Name { get; set; }
+        public Person ResponsiblePerson { get; set; }
+        public String Description { get; set; }
+        public Category category { get; set; }
+        public MeetingType meetingType { get; set; }
+        public DateOnly startDate { get; set; }
+        public DateOnly endDate { get; set; }
+        public List<Person> Participants = new List<Person>();
 
-        private Meeting(string name, Person responsiblePerson, string description, Category category, MeetingType type, DateOnly startDate, DateOnly endDate)
+        public Meeting(string name, Person responsiblePerson, string description, Category category, MeetingType type, DateOnly startDate, DateOnly endDate)
         {
-            _name = name;
-            _responsiblePerson = responsiblePerson;
-            _description = description;
-            _category = category;
-            _type = type;
-            _startDate = startDate;
-            _endDate = endDate;
+            Name = name;
+            ResponsiblePerson = responsiblePerson;
+            Description = description;
+            this.category = category;
+            meetingType = type;
+            this.startDate = startDate;
+            this.endDate = endDate;
         }
 
         public static Meeting Create()
         {
+            Console.Clear();
             Console.WriteLine("Please enter meeting name:");
             var name = Console.ReadLine();
             Console.WriteLine("Please enter responsible person name:");
@@ -41,7 +42,6 @@ namespace MeetingsApp
             var description = Console.ReadLine();
             Category category = Service.SelectMeetingCathegory();
             MeetingType meetingType = Service.SelectMeetingType();
-            Console.WriteLine("Please enter starting date:");
             Console.WriteLine("Please enter start date:");
             var startDate = Service.ReadDate();
             Console.WriteLine("Please enter end date:");

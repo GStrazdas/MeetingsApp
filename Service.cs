@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,6 +77,16 @@ namespace MeetingsApp
             }
             while (true);
             return date;
+        }
+        public static void CreateNewMeeting()
+        {
+            var meeting = new List<Meeting>() { Meeting.Create(), Meeting.Create() };
+            var streamWrite = new WriteToFile();
+            //string data = JsonConvert.SerializeObject(meeting);
+            Console.WriteLine(JsonConvert.SerializeObject(meeting));
+            Console.ReadLine();
+            streamWrite.WriteDataToFile(JsonConvert.SerializeObject(meeting));
+            streamWrite.CloseStream();
         }
     }
 }

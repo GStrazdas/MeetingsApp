@@ -8,13 +8,13 @@ namespace MeetingsApp
 {
     internal class Person
     {
-        private readonly string _name;
-        private readonly string _surname;
+        public string Name { get; set; }
+        public string Surname { get; set; }
 
         public Person(string name, string surname)
         {
-            _name = name;
-            _surname = surname;
+            Name = name;
+            Surname = surname;
         }
     }
 }

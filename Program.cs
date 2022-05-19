@@ -10,6 +10,8 @@ using MeetingsApp;
 using static MeetingsApp.DataTypes;
 
 bool run = true;
+string data = "";
+
 do
 {
     Console.Clear();
@@ -20,6 +22,8 @@ do
         "\n4 - remove person from the meeting" +
         "\n5 - meetings list" +
         "\n6 - try method" +
+        "\n7 - read from file" +
+        "\n8 - write to file" +
         "\n0 - to exit");
     try
     {
@@ -27,7 +31,7 @@ do
         switch(choice)
         {
             case 1:
-                Console.WriteLine("create a new meeting");
+                Service.CreateNewMeeting();
                 break;
             case 2:
                 Console.WriteLine("delete a meeting");
@@ -44,6 +48,21 @@ do
             case 6:
                 Console.WriteLine("Create meeting");
                 var meeting = Meeting.Create();
+                break;
+            case 7:
+                Console.WriteLine("Open file");
+                var streamRead = new ReadFile();
+                data = streamRead.GetFileData();
+                Console.WriteLine($"Failo turinys:\n{data}");
+                streamRead.CloseStream();
+                Console.ReadLine();
+                break;
+            case 8:
+                Console.WriteLine($"Write to file:\n{data}");
+                var streamWrite = new WriteToFile();
+                streamWrite.WriteDataToFile(data);
+                streamWrite.CloseStream();
+                Console.ReadLine();
                 break;
             case 0:
                 run = false;
