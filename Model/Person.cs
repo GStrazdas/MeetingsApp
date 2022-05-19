@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MeetingsApp
+﻿namespace MeetingsApp.Model
 {
-    internal class Person
+    public class Person
     {
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -15,6 +9,10 @@ namespace MeetingsApp
         {
             Name = name;
             Surname = surname;
+        }
+        public override string ToString()
+        {
+            return $"{Name} {Surname}";
         }
     }
 }

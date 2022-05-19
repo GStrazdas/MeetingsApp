@@ -6,8 +6,8 @@
  *                              *
  * ******************************/
 
-using MeetingsApp;
-using static MeetingsApp.DataTypes;
+using MeetingsApp.Model;
+using MeetingsApp.Services;
 
 bool run = true;
 string data = "";
@@ -23,7 +23,6 @@ do
         "\n5 - meetings list" +
         "\n6 - try method" +
         "\n7 - read from file" +
-        "\n8 - write to file" +
         "\n0 - to exit");
     try
     {
@@ -34,7 +33,9 @@ do
                 Service.CreateNewMeeting();
                 break;
             case 2:
-                Console.WriteLine("delete a meeting");
+                Console.WriteLine("Please select the meeting (enter meetings Name)");
+                string Name = Console.ReadLine();
+                Service.DeleteMeeting(/*Service.SelectMeetingName()*/Name);
                 break;
             case 3:
                 Console.WriteLine("add person to the meeting");
@@ -51,17 +52,7 @@ do
                 break;
             case 7:
                 Console.WriteLine("Open file");
-                var streamRead = new ReadFile();
-                data = streamRead.GetFileData();
-                Console.WriteLine($"Failo turinys:\n{data}");
-                streamRead.CloseStream();
-                Console.ReadLine();
-                break;
-            case 8:
-                Console.WriteLine($"Write to file:\n{data}");
-                var streamWrite = new WriteToFile();
-                streamWrite.WriteDataToFile(data);
-                streamWrite.CloseStream();
+                Service.DispalyMeetingList(new ReadFile().GetFileData());
                 Console.ReadLine();
                 break;
             case 0:

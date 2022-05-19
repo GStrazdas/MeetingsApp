@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MeetingsApp.Model;
+using Newtonsoft.Json;
 
-namespace MeetingsApp
+namespace MeetingsApp.Services
 {
     internal class WriteToFile
     {
         private readonly StreamWriter _streamWriter;
-        private readonly string _path = @"C:\Users\gedst\source\repos\MeetingsApp\Repos\Meetings.json";
+        private readonly string _path = @"Meetings.json";
 
         public WriteToFile()
         {
@@ -22,9 +19,10 @@ namespace MeetingsApp
                 Console.WriteLine(ex.Message);
             }
         }
-        public void WriteDataToFile(string data)
+        public void WriteDataToFile(List<Meeting> meetingList)
         {
-            _streamWriter.WriteLine(data);
+            _streamWriter.WriteLine(JsonConvert.SerializeObject(meetingList));
+            CloseStream();
         }
         public void CloseStream()
         {

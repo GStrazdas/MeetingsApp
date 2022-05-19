@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MeetingsApp.Model;
+using Newtonsoft.Json;
 
-namespace MeetingsApp
+namespace MeetingsApp.Services
 {
     internal class ReadFile
     {
         private readonly StreamReader _streamRead;
-        private readonly string _path = @"C:\Users\gedst\source\repos\MeetingsApp\Repos\Meetings.json";
+        private readonly string _path = @"Meetings.json";
 
         public ReadFile()
         {
@@ -22,9 +19,11 @@ namespace MeetingsApp
                 Console.WriteLine(ex.Message);
             }
         }
-        public string GetFileData()
+        public List<Meeting> GetFileData()
         {
-            return _streamRead.ReadToEnd();
+            var meetingList = JsonConvert.DeserializeObject<List<Meeting>>(_streamRead.ReadToEnd());
+            CloseStream();
+            return meetingList;
         }
         public void CloseStream()
         {

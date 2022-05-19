@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static MeetingsApp.DataTypes;
+﻿using MeetingsApp.Services;
+using static MeetingsApp.Model.DataTypes;
 
-namespace MeetingsApp
+namespace MeetingsApp.Model
 {
-    internal class Meeting
+    public class Meeting
     {
-        public String Name { get; set; }
+        public string Name { get; set; }
         public Person ResponsiblePerson { get; set; }
-        public String Description { get; set; }
+        public string Description { get; set; }
         public Category category { get; set; }
         public MeetingType meetingType { get; set; }
-        public DateOnly startDate { get; set; }
-        public DateOnly endDate { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
         public List<Person> Participants = new List<Person>();
 
-        public Meeting(string name, Person responsiblePerson, string description, Category category, MeetingType type, DateOnly startDate, DateOnly endDate)
+        public Meeting(string name, Person responsiblePerson, string description, Category category, MeetingType type, DateTime startDate, DateTime endDate)
         {
             Name = name;
             ResponsiblePerson = responsiblePerson;
@@ -45,20 +41,15 @@ namespace MeetingsApp
             Console.WriteLine("Please enter start date:");
             var startDate = Service.ReadDate();
             Console.WriteLine("Please enter end date:");
-            DateOnly endDate;
-            do
-            {
-                endDate = Service.ReadDate();
-                if (endDate >= startDate)
-                {
-                    break;
-                }
-                Console.WriteLine("The end date should be greater or equal to the start date!");
-            }
-            while (true);
+            var endDate = Service.ReadEndDate(startDate);
 
-            var meeting = new Meeting(name, new Person(personName, surname), description, category, meetingType, startDate, endDate);
-            return meeting;
+            return new Meeting(name, new Person(personName, surname), description, category, meetingType, startDate, endDate);
+        }
+
+        public override string ToString()
+        {
+            return $"Meeting: {Name} - {Description} ({category}, {meetingType}) organizer {ResponsiblePerson}" +
+                $"\n\tstarts at {startDate} : ends at {endDate}";
         }
     }
 }
