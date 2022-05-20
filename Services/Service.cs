@@ -98,7 +98,7 @@ namespace MeetingsApp.Services
                 return;
             }
             var meetingList = new ReadFile().GetFileData();
-            if(meetingList is null)
+            if (meetingList is null)
             {
                 meetingList = new List<Meeting>();
             }
@@ -111,7 +111,7 @@ namespace MeetingsApp.Services
         public static bool MeetingExist(string Name)
         {
             var meetingList = new ReadFile().GetFileData();
-            
+
             if (meetingList is not null && meetingList.FirstOrDefault(m => m.Name == Name) != null)
             {
                 return true;
@@ -143,6 +143,90 @@ namespace MeetingsApp.Services
                 Console.WriteLine("Meeting was deleted. press any key");
                 Console.ReadLine();
             }
+        }
+        public static string ReadName()
+        {
+            var PersonName = "";
+            do
+            {
+                try
+                {
+                    PersonName = Console.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                if (PersonName.Length > 0)
+                {
+                    return PersonName;
+                }
+                Console.Write("\nYou have to enter persons name: ");
+            }
+            while (true);
+        }
+        public static string ReadSurname()
+        {
+            var PersonSurname = "";
+            do
+            {
+                try
+                {
+                    PersonSurname = Console.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                if (PersonSurname.Length > 0)
+                {
+                    return PersonSurname;
+                }
+                Console.Write("\nYou have to enter persons surname: ");
+            }
+            while (true);
+        }
+        public static string ReadMeetingName()
+        {
+            var meetingName = "";
+            do
+            {
+                try
+                {
+                    meetingName = Console.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                if (meetingName.Length > 0)
+                {
+                    return meetingName;
+                }
+                Console.Write("\nYou have to enter meeting name: ");
+            }
+            while (true);
+        }
+        public static string ReadMeetingDescription()
+        {
+            var meetingDescription = "";
+            do
+            {
+                try
+                {
+                    meetingDescription = Console.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                if (meetingDescription.Length > 0)
+                {
+                    return meetingDescription;
+                }
+                Console.Write("\nYou have to enter meeting description: ");
+            }
+            while (true);
         }
     }
 }

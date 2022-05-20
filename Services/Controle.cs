@@ -10,6 +10,7 @@ namespace MeetingsApp.Services
             do
             {
                 Console.Clear();
+                Title();
                 Console.WriteLine("Please select what do you want to do:" +
                     "\n1 - create a new meeting" +
                     "\n2 - delete a meeting" +
@@ -70,5 +71,25 @@ namespace MeetingsApp.Services
             }
             while (run);
         }
+        public static void LoginScreen()
+        {
+            do
+            {
+                Console.Clear();
+                Title();
+                new Login().CheckUser();
+            }
+            while (Login.user is null);
+            MainMenu();
+        }
+        public static void Title()
+        {
+            Console.WriteLine("MeetingApp");
+            Console.WriteLine($"{DateTime.Today}");
+            if (Login.user is not null)
+            {
+                Console.WriteLine($"User: {Login.user}");
+            }
+         }
     }
 }

@@ -11,5 +11,10 @@ namespace MeetingsApp.Model
         public string UserName { get; set; }
         public Person person { get; set; }
         public string Password { get; set; }
+
+        public override string ToString()
+        {
+            return $"{person.Name} {person.Surname}";
+        }
     }
 }

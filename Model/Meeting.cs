@@ -28,19 +28,19 @@ namespace MeetingsApp.Model
         public static Meeting Create()
         {
             Console.Clear();
-            Console.WriteLine("Please enter meeting name:");
-            var name = Console.ReadLine();
-            Console.WriteLine("Please enter responsible person name:");
+            Console.Write("Please enter meeting name:");
+            var name = Service.ReadMeetingName();
+            Console.Write("\nPlease enter responsible person name:");
             var personName = Console.ReadLine();
-            Console.WriteLine("Please enter responsible person surname:");
+            Console.Write("\nPlease enter responsible person surname:");
             var surname = Console.ReadLine();
-            Console.WriteLine("Please enter description:");
-            var description = Console.ReadLine();
+            Console.Write("\nPlease enter description:");
+            var description = Service.ReadMeetingDescription();
             Category category = Service.SelectMeetingCathegory();
             MeetingType meetingType = Service.SelectMeetingType();
-            Console.WriteLine("Please enter start date:");
+            Console.Write("\nPlease enter start date:");
             var startDate = Service.ReadDate();
-            Console.WriteLine("Please enter end date:");
+            Console.Write("\nPlease enter end date:");
             var endDate = Service.ReadEndDate(startDate);
 
             return new Meeting(name, new Person(personName, surname), description, category, meetingType, startDate, endDate);

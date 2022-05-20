@@ -6,9 +6,8 @@
  *                              *
  * ******************************/
 
-using MeetingsApp.Model;
 using MeetingsApp.Services;
 
-Controle.MainMenu();
+Controle.LoginScreen();
 
 Console.WriteLine("Finished");
