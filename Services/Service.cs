@@ -98,6 +98,10 @@ namespace MeetingsApp.Services
                 return;
             }
             var meetingList = new ReadFile().GetFileData();
+            if(meetingList is null)
+            {
+                meetingList = new List<Meeting>();
+            }
             meetingList.Add(meeting);
             var streamWrite = new WriteToFile();
             streamWrite.WriteDataToFile(meetingList);
@@ -107,7 +111,8 @@ namespace MeetingsApp.Services
         public static bool MeetingExist(string Name)
         {
             var meetingList = new ReadFile().GetFileData();
-            if (meetingList.FirstOrDefault(m => m.Name == Name) != null)
+            
+            if (meetingList is not null && meetingList.FirstOrDefault(m => m.Name == Name) != null)
             {
                 return true;
             }
@@ -115,9 +120,16 @@ namespace MeetingsApp.Services
         }
         public static void DispalyMeetingList(List<Meeting> meetingList)
         {
-            foreach (Meeting meeting in meetingList)
+            if (meetingList is not null && meetingList.Count > 0)
             {
-                Console.WriteLine(meeting);
+                foreach (Meeting meeting in meetingList)
+                {
+                    Console.WriteLine(meeting);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Meeting list is empty.");
             }
         }
         public static void DeleteMeeting(string Name)

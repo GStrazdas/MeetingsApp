@@ -12,6 +12,10 @@ namespace MeetingsApp.Services
         {
             try
             {
+                if (!File.Exists(_path))
+                {
+                    File.Create(_path);
+                }
                 _streamWriter = new StreamWriter(_path);
             }
             catch (Exception ex)

@@ -12,6 +12,10 @@ namespace MeetingsApp.Services
         {
             try
             {
+                if (!File.Exists(_path))
+                {
+                    using(File.Create(_path));
+                }
                 _streamRead = new StreamReader(_path);
             }
             catch (Exception ex)
