@@ -28,22 +28,25 @@ namespace MeetingsApp.Model
         {
             Console.Clear();
             Controle.Title();
-            Console.Write("Please enter meeting name:");
+            Console.Write("Please enter meeting name: ");
             var name = Service.ReadMeetingName();
-            Console.Write("Please enter description:");
+            Console.Write("Please enter description: ");
             var description = Service.ReadMeetingDescription();
             Category category = Service.SelectMeetingCathegory();
             MeetingType meetingType = Service.SelectMeetingType();
-            Console.Write("Please enter start date:");
+            Console.Write("Please enter start date: ");
             var startDate = Service.ReadDate();
-            Console.Write("Please enter end date:");
+            Console.Write("Please enter end date: ");
             var endDate = Service.ReadEndDate(startDate);
+            var person = new Person(Login.user.Name, Login.user.Surname);
+            var meeting = new Meeting(name, person, description, category, meetingType, startDate, endDate);
+            meeting.Participants.Add(person);
 
-            return new Meeting(name, new Person(Login.user.Name, Login.user.Surname), description, category, meetingType, startDate, endDate);
+            return meeting;
         }
         public override string ToString()
         {
-            return $"Meeting: {Name} - {Description} ({category}, {meetingType}) organizer {ResponsiblePerson}" +
+            return $"Meeting: {Name} - {Description} ({category}, {meetingType}). Organizer: {ResponsiblePerson}" +
                 $"\n\tstarts at {startDate} : ends at {endDate}";
         }
     }
