@@ -4,9 +4,9 @@ namespace MeetingsApp.Services
 {
     internal class Controle
     {
-        public static void MainMenu()
+        public static int MainMenu()
         {
-            bool run = true;
+            int choice = -1;
             do
             {
                 Console.Clear();
@@ -17,21 +17,18 @@ namespace MeetingsApp.Services
                     "\n3 - add person to the meeting" +
                     "\n4 - remove person from the meeting" +
                     "\n5 - meetings list" +
-                    "\n6 - try method" +
-                    "\n7 - read from file" +
+                    "\n9 - logout" +
                     "\n0 - to exit");
                 try
                 {
-                    var choice = int.Parse(Console.ReadLine());
+                    choice = int.Parse(Console.ReadLine());
                     switch (choice)
                     {
                         case 1:
                             Service.CreateNewMeeting();
                             break;
                         case 2:
-                            Console.WriteLine("Please select the meeting (enter meetings Name)");
-                            string Name = Console.ReadLine();
-                            Service.DeleteMeeting(/*Service.SelectMeetingName()*/Name);
+                            DeleteMeeting();
                             break;
                         case 3:
                             Console.WriteLine("add person to the meeting");
@@ -40,27 +37,10 @@ namespace MeetingsApp.Services
                             Console.WriteLine("remove person from the meeting");
                             break;
                         case 5:
-                            Console.WriteLine("meetings list");
+                            Service.DispalyMeetingList(Service.GetMeetingList());
                             break;
-                        case 6:
-                            Console.WriteLine("Create meeting");
-                            var meeting = Meeting.Create();
-                            break;
-                        case 7:
-                            Console.WriteLine("Open file");
-                            var meetingList = new ReadFile().GetFileData();
-                            if (meetingList is not null)
-                            {
-                                Service.DispalyMeetingList(meetingList);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Meeting list is empty.");
-                            }
-                            Console.ReadLine();
-                            break;
-                        case 0:
-                            run = false;
+                        case 9:
+                            Login.user = null;
                             break;
                     }
                 }
@@ -69,18 +49,41 @@ namespace MeetingsApp.Services
                     Console.WriteLine(ex.Message);
                 }
             }
-            while (run);
+            while (choice != 0 && choice != 9);
+            return choice;
         }
-        public static void LoginScreen()
+        public static int LoginScreen()
         {
+            int choice = -1;
             do
             {
                 Console.Clear();
                 Title();
-                new Login().CheckUser();
+                Console.WriteLine("Please select what do you want to do:" +
+                    "\n1 - login" +
+                    "\n0 - to exit");
+
+                try
+                {
+                    choice = int.Parse(Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 1:
+                            new Login().CheckUser();
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
-            while (Login.user is null);
-            MainMenu();
+            while (Login.user is null && choice != 0);
+            if(choice != 0)
+            {
+                choice = MainMenu();
+            }
+            return choice;
         }
         public static void Title()
         {
@@ -91,5 +94,37 @@ namespace MeetingsApp.Services
                 Console.WriteLine($"User: {Login.user}");
             }
          }
+        public static void DeleteMeeting()
+        {
+            int choice = -1;
+            do
+            {
+                Console.Clear();
+                Title();
+                Console.WriteLine("Please select what do you want to do:" +
+                    "\n1 - select meeting to delete" +
+                    "\n2 - meetings list" +
+                    "\n0 - to exit");
+                try
+                {
+                    choice = int.Parse(Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 1:
+                            Console.Write("Please, select the meeting to delete: ");
+                            Service.DeleteMeeting(Service.ReadMeetingName());
+                            break;
+                        case 2:
+                            Service.DispalyMeetingList(Service.GetMeetingList());
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            while (choice != 0);
+        }
     }
 }

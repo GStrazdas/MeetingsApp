@@ -91,13 +91,13 @@ namespace MeetingsApp.Services
         public static void CreateNewMeeting()
         {
             var meeting = Meeting.Create();
-            if (MeetingExist(meeting.Name))
+            if (CheckMeetingExist(meeting.Name))
             {
-                Console.WriteLine("Meeting already exist... press any key");
+                Console.WriteLine("Meeting already exist! Press any key.");
                 Console.ReadLine();
                 return;
             }
-            var meetingList = new ReadFile().GetFileData();
+            var meetingList = GetMeetingList();
             if (meetingList is null)
             {
                 meetingList = new List<Meeting>();
@@ -105,12 +105,12 @@ namespace MeetingsApp.Services
             meetingList.Add(meeting);
             var streamWrite = new WriteToFile();
             streamWrite.WriteDataToFile(meetingList);
-            Console.WriteLine("Meeting was added. press any key");
+            Console.WriteLine("Meeting was added. Press any key.");
             Console.ReadLine();
         }
-        public static bool MeetingExist(string Name)
+        public static bool CheckMeetingExist(string Name)
         {
-            var meetingList = new ReadFile().GetFileData();
+            var meetingList = GetMeetingList();
 
             if (meetingList is not null && meetingList.FirstOrDefault(m => m.Name == Name) != null)
             {
@@ -126,23 +126,36 @@ namespace MeetingsApp.Services
                 {
                     Console.WriteLine(meeting);
                 }
+                Console.WriteLine("Press any key.");
             }
             else
             {
-                Console.WriteLine("Meeting list is empty.");
+                Console.WriteLine("Meeting list is empty. Press any key.");
             }
+            Console.ReadLine();
         }
         public static void DeleteMeeting(string Name)
         {
-            var meetingList = new ReadFile().GetFileData();
-            if (MeetingExist(Name))
+            if (CheckMeetingExist(Name))
             {
-                meetingList.Remove(meetingList.FirstOrDefault(m => m.Name == Name));
-                var streamWrite = new WriteToFile();
-                streamWrite.WriteDataToFile(meetingList);
-                Console.WriteLine("Meeting was deleted. press any key");
+                var meetingList = GetMeetingList();
+                var meeting = meetingList.FirstOrDefault(m => m.Name == Name);
+                if (meeting.ResponsiblePerson.Name == Login.user.Name &&
+                    meeting.ResponsiblePerson.Surname == Login.user.Surname)
+                { 
+                    meetingList.Remove(meeting);
+                    var streamWrite = new WriteToFile();
+                    streamWrite.WriteDataToFile(meetingList);
+                    Console.WriteLine("Meeting was deleted. Press any key.");
+                    Console.ReadLine();
+                    return;
+                }
+                Console.WriteLine("You can't delete other users meetings! Press any key.");
                 Console.ReadLine();
+                return;
             }
+            Console.WriteLine("There is no such meeting! Press any key.");
+            Console.ReadLine();
         }
         public static string ReadName()
         {
@@ -161,7 +174,7 @@ namespace MeetingsApp.Services
                 {
                     return PersonName;
                 }
-                Console.Write("\nYou have to enter persons name: ");
+                Console.Write("You have to enter persons name: ");
             }
             while (true);
         }
@@ -182,7 +195,7 @@ namespace MeetingsApp.Services
                 {
                     return PersonSurname;
                 }
-                Console.Write("\nYou have to enter persons surname: ");
+                Console.Write("You have to enter persons surname: ");
             }
             while (true);
         }
@@ -203,7 +216,7 @@ namespace MeetingsApp.Services
                 {
                     return meetingName;
                 }
-                Console.Write("\nYou have to enter meeting name: ");
+                Console.Write("You have to enter meeting name: ");
             }
             while (true);
         }
@@ -224,9 +237,13 @@ namespace MeetingsApp.Services
                 {
                     return meetingDescription;
                 }
-                Console.Write("\nYou have to enter meeting description: ");
+                Console.Write("You have to enter meeting description: ");
             }
             while (true);
+        }
+        public static List<Meeting> GetMeetingList()
+        {
+            return new ReadFile().GetFileData();
         }
     }
 }

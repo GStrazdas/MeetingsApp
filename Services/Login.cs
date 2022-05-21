@@ -12,7 +12,9 @@ namespace MeetingsApp.Services
 
         public void CheckUser()
         {
-            Console.Write("Please, enter user name: ");
+            Console.Clear();
+            Controle.Title();
+            Console.Write("Please, enter username: ");
             var userName = ReadUserName();
             CheckAndCreateUserFile();
             if (CheckUserExist(userName))
@@ -66,11 +68,11 @@ namespace MeetingsApp.Services
         private User CreateNewUser(string userName)
         {
             Console.WriteLine("This the first time you login.");
-            Console.Write("\nPlease enter your Name: ");
+            Console.Write("Please enter your Name: ");
             var personName = ReadName();
-            Console.Write("\nPlease enter your Surname: ");
+            Console.Write("Please enter your Surname: ");
             var personSurname = ReadSurname();
-            Console.Write("\nPlease enter your password: ");
+            Console.Write("Please enter your password: ");
             var password = ReadPassword();
             
             return new User() { UserName = userName, person = new Person(personName, personSurname), Password = password };
@@ -92,7 +94,7 @@ namespace MeetingsApp.Services
                 {
                     return PersonName;
                 }
-                Console.Write("\nYou have to enter your name: ");
+                Console.Write("You have to enter your name: ");
             }
             while (true);
         }
@@ -113,7 +115,7 @@ namespace MeetingsApp.Services
                 {
                     return PersonSurname;
                 }
-                Console.Write("\nYou have to enter your surname: ");
+                Console.Write("You have to enter your surname: ");
             }
             while (true);
         }
@@ -134,7 +136,7 @@ namespace MeetingsApp.Services
                 {
                     return PersonPassword;
                 }
-                Console.Write("\nYou have to enter your password: ");
+                Console.Write("You have to enter your password: ");
             }
             while (true);
         }
@@ -155,7 +157,7 @@ namespace MeetingsApp.Services
                 {
                     return UserName;
                 }
-                Console.Write("\nYou have to enter your username: ");
+                Console.Write("You have to enter your username: ");
             }
             while (true);
         }
