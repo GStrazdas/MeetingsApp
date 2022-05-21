@@ -31,10 +31,10 @@ namespace MeetingsApp.Services
                             DeleteMeeting();
                             break;
                         case 3:
-                            Console.WriteLine("add person to the meeting");
+                            AddPersonToParticipantsList();
                             break;
                         case 4:
-                            Console.WriteLine("remove person from the meeting");
+                            DeletePersonToParticipantsList();
                             break;
                         case 5:
                             Service.DispalyMeetingList(Service.GetMeetingList());
@@ -113,6 +113,68 @@ namespace MeetingsApp.Services
                         case 1:
                             Console.Write("Please, select the meeting to delete: ");
                             Service.DeleteMeeting(Service.ReadMeetingName());
+                            break;
+                        case 2:
+                            Service.DispalyMeetingList(Service.GetMeetingList());
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            while (choice != 0);
+        }
+        public static void AddPersonToParticipantsList()
+        {
+            int choice = -1;
+            do
+            {
+                Console.Clear();
+                Title();
+                Console.WriteLine("Please select what do you want to do:" +
+                    "\n1 - Add person to the list of participants" +
+                    "\n2 - meetings list" +
+                    "\n0 - to exit");
+                try
+                {
+                    choice = int.Parse(Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 1:
+                            Service.AddPersonToParticipantsList();
+                            break;
+                        case 2:
+                            Service.DispalyMeetingList(Service.GetMeetingList());
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            while (choice != 0);
+        }
+        public static void DeletePersonToParticipantsList()
+        {
+            int choice = -1;
+            do
+            {
+                Console.Clear();
+                Title();
+                Console.WriteLine("Please select what do you want to do:" +
+                    "\n1 - Delete person from the participants list" +
+                    "\n2 - meetings list" +
+                    "\n0 - to exit");
+                try
+                {
+                    choice = int.Parse(Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 1:
+                            Service.DeletePersonFromParticipantsList();
                             break;
                         case 2:
                             Service.DispalyMeetingList(Service.GetMeetingList());

@@ -84,7 +84,8 @@ namespace MeetingsApp.Services
                 {
                     return endDate;
                 }
-                Console.WriteLine("The end date should be greater or equal to the start date!");
+                Console.Write("The end date should be greater or equal to the start date!\n" +
+                    "Please enter ending date again: ");
             }
             while (true);
         }
@@ -160,6 +161,7 @@ namespace MeetingsApp.Services
         public static string ReadName()
         {
             var PersonName = "";
+            Console.Write("Please enter persons name: ");
             do
             {
                 try
@@ -181,6 +183,7 @@ namespace MeetingsApp.Services
         public static string ReadSurname()
         {
             var PersonSurname = "";
+            Console.Write("Please enter persons surname: ");
             do
             {
                 try
@@ -244,6 +247,81 @@ namespace MeetingsApp.Services
         public static List<Meeting> GetMeetingList()
         {
             return new ReadFile().GetFileData();
+        }
+        public static Meeting SelectTheMeeting(string meetingName)
+        {
+            return GetMeetingList().FirstOrDefault(m => m.Name == meetingName);
+        }
+        public static void AddPersonToParticipantsList()
+        {
+            Console.Write("Please, select the meeting for replenishment: ");
+            var meetingName = ReadMeetingName();
+            if (CheckMeetingExist(meetingName))
+            {
+                var meetingList = new ReadFile().GetFileData();
+                var meeting = GetMeetingList().FirstOrDefault(m => m.Name == meetingName);
+                var person = new Person(ReadName(), ReadSurname());
+                if(CheckPersonExist(meeting, person))
+                {
+                    Console.WriteLine("The person is already on the participants list! Press any key.");
+                    Console.ReadLine();
+                    return;
+                }
+                meeting.Participants.Add(person);
+                meetingList.Remove(meetingList.FirstOrDefault(m => m.Name == meetingName));
+                meetingList.Add(meeting);
+                var streamWrite = new WriteToFile();
+                streamWrite.WriteDataToFile(meetingList);
+
+                Console.WriteLine("The person is added. Press any key.");
+                Console.ReadLine();
+                return;
+            }
+            Console.WriteLine("There is no such meeting! Press any key.");
+            Console.ReadLine();
+        }
+        public static void DeletePersonFromParticipantsList()
+        {
+            Console.Write("Please, select the meeting for removing: ");
+            var meetingName = ReadMeetingName();
+            if (CheckMeetingExist(meetingName))
+            {
+                var meetingList = new ReadFile().GetFileData();
+                var meeting = GetMeetingList().FirstOrDefault(m => m.Name == meetingName);
+                var person = new Person(ReadName(), ReadSurname());
+                if (!CheckPersonExist(meeting, person))
+                {
+                    Console.WriteLine("There is no such person on the participants list! Press any key.");
+                    Console.ReadLine();
+                    return;
+                }
+                if (meeting.ResponsiblePerson.Name == person.Name &&
+                    meeting.ResponsiblePerson.Surname == person.Surname)
+                {
+                    Console.WriteLine("You can't remove the organizer! Press any key.");
+                    Console.ReadLine();
+                    return;
+                }
+                meeting.Participants.Remove(meeting.Participants.FirstOrDefault(p => p.Name == person.Name && p.Surname == person.Surname));
+                meetingList.Remove(meetingList.FirstOrDefault(m => m.Name == meetingName));
+                meetingList.Add(meeting);
+                var streamWrite = new WriteToFile();
+                streamWrite.WriteDataToFile(meetingList);
+
+                Console.WriteLine("The person is delete. Press any key.");
+                Console.ReadLine();
+                return;
+            }
+            Console.WriteLine("There is no such meeting! Press any key.");
+            Console.ReadLine();
+        }
+        public static bool CheckPersonExist(Meeting meeting, Person person)
+        {
+            if(meeting.Participants.FirstOrDefault(p => p.Name == person.Name && p.Surname == person.Surname) != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
