@@ -15,7 +15,7 @@ namespace MeetingsApp.Services
             Console.Clear();
             Controle.Title();
             Console.Write("Please, enter username: ");
-            var userName = ReadUserName();
+            var userName = Service.ReadString();
             CheckAndCreateUserFile();
             if (CheckUserExist(userName))
             {
@@ -29,7 +29,7 @@ namespace MeetingsApp.Services
         private void CheckPassword(string userName)
         {
             Console.Write("Please, enter your password: ");
-            var password = ReadPassword();
+            var password = Service.ReadString();
             var verifiableUser = GetUserList().FirstOrDefault(u => u.UserName == userName);
             if (verifiableUser.Password == password)
             {
@@ -69,97 +69,13 @@ namespace MeetingsApp.Services
         {
             Console.WriteLine("This the first time you login.");
             Console.Write("Please enter your Name: ");
-            var personName = ReadName();
+            var personName = Service.ReadString();
             Console.Write("Please enter your Surname: ");
-            var personSurname = ReadSurname();
+            var personSurname = Service.ReadString();
             Console.Write("Please enter your password: ");
-            var password = ReadPassword();
+            var password = Service.ReadString();
             
             return new User() { UserName = userName, person = new Person(personName, personSurname), Password = password };
-        }
-        private string ReadName()
-        {
-            var PersonName = "";
-            do
-            {
-                try
-                {
-                    PersonName = Console.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                if (PersonName.Length > 0)
-                {
-                    return PersonName;
-                }
-                Console.Write("You have to enter your name: ");
-            }
-            while (true);
-        }
-        private string ReadSurname()
-        {
-            var PersonSurname = "";
-            do
-            {
-                try
-                {
-                    PersonSurname = Console.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                if (PersonSurname.Length > 0)
-                {
-                    return PersonSurname;
-                }
-                Console.Write("You have to enter your surname: ");
-            }
-            while (true);
-        }
-        private string ReadPassword()
-        {
-            var PersonPassword = "";
-            do
-            {
-                try
-                {
-                    PersonPassword = Console.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                if (PersonPassword.Length > 0)
-                {
-                    return PersonPassword;
-                }
-                Console.Write("You have to enter your password: ");
-            }
-            while (true);
-        }
-        private string ReadUserName()
-        {
-            var UserName = "";
-            do
-            {
-                try
-                {
-                    UserName = Console.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                if (UserName.Length > 0)
-                {
-                    return UserName;
-                }
-                Console.Write("You have to enter your username: ");
-            }
-            while (true);
         }
         private void AddNewUser(User _user)
         {

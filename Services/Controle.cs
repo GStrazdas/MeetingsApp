@@ -17,8 +17,14 @@ namespace MeetingsApp.Services
                     "\n3 - add person to the meeting" +
                     "\n4 - remove person from the meeting" +
                     "\n5 - meetings list" +
-                    "\n9 - logout" +
-                    "\n0 - to exit");
+                    "\n6 - Filter meetings by description" +
+                    "\n7 - Filter meetings by responsible person" +
+                    "\n8 - Filter meetings by category" +
+                    "\n9 - Filter meetings by type" +
+                    "\n10 - Filter meetings by dates" +
+                    "\n11 - Filter meetings by the number of attendees" +
+                    "\n0 - to exit" +
+                    "\n-1 - logout");
                 try
                 {
                     choice = int.Parse(Console.ReadLine());
@@ -39,7 +45,25 @@ namespace MeetingsApp.Services
                         case 5:
                             Service.DispalyMeetingList(Service.GetMeetingList());
                             break;
+                        case 6:
+                            Service.FilterByDescription();
+                            break;
+                        case 7:
+                            Service.FilterByOrganizer();
+                            break;
+                        case 8:
+                            Service.FilterByCategory();
+                            break;
                         case 9:
+                            Service.FilterByType();
+                            break;
+                        case 10:
+                            Service.FilterByDate();
+                            break;
+                        case 11:
+                            FilterByTheNumberOfAttendees();
+                            break;
+                        case -1:
                             Login.user = null;
                             break;
                     }
@@ -49,7 +73,7 @@ namespace MeetingsApp.Services
                     Console.WriteLine(ex.Message);
                 }
             }
-            while (choice != 0 && choice != 9);
+            while (choice != 0 && choice != -1);
             return choice;
         }
         public static int LoginScreen()
@@ -178,6 +202,54 @@ namespace MeetingsApp.Services
                             break;
                         case 2:
                             Service.DispalyMeetingList(Service.GetMeetingList());
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            while (choice != 0);
+        }
+        public static void FilterByTheNumberOfAttendees()
+        {
+            int choice = -1;
+            do
+            {
+                Console.Clear();
+                Title();
+                int participantsNumber;
+                Console.WriteLine("Please select how you want to filter:" +
+                    "\n1 - less than" +
+                    "\n2 - equal to" +
+                    "\n3 - greiter than" +
+                    "\n0 - to exit");
+                try
+                {
+                    choice = int.Parse(Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 1:
+                            Console.Write("Please, enter participants number: ");
+                            participantsNumber = Service.ReadInteger();
+                            Service.DispalyMeetingList(Service.GetMeetingList()
+                                .Where(m => m.Participants.Count() < participantsNumber)
+                                .ToList());
+                            break;
+                        case 2:
+                            Console.Write("Please, enter participants number: ");
+                            participantsNumber = Service.ReadInteger();
+                            Service.DispalyMeetingList(Service.GetMeetingList()
+                                .Where(m => m.Participants.Count() == participantsNumber)
+                                .ToList());
+                            break;
+                        case 3:
+                            Console.Write("Please, enter participants number: ");
+                            participantsNumber = Service.ReadInteger();
+                            Service.DispalyMeetingList(Service.GetMeetingList()
+                                .Where(m => m.Participants.Count() > participantsNumber)
+                                .ToList());
                             break;
                     }
                 }

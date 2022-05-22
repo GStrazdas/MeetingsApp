@@ -160,89 +160,23 @@ namespace MeetingsApp.Services
         }
         public static string ReadName()
         {
-            var PersonName = "";
             Console.Write("Please enter persons name: ");
-            do
-            {
-                try
-                {
-                    PersonName = Console.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                if (PersonName.Length > 0)
-                {
-                    return PersonName;
-                }
-                Console.Write("You have to enter persons name: ");
-            }
-            while (true);
+            return ReadString();
         }
         public static string ReadSurname()
         {
-            var PersonSurname = "";
             Console.Write("Please enter persons surname: ");
-            do
-            {
-                try
-                {
-                    PersonSurname = Console.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                if (PersonSurname.Length > 0)
-                {
-                    return PersonSurname;
-                }
-                Console.Write("You have to enter persons surname: ");
-            }
-            while (true);
+            return ReadString();
         }
         public static string ReadMeetingName()
         {
-            var meetingName = "";
-            do
-            {
-                try
-                {
-                    meetingName = Console.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                if (meetingName.Length > 0)
-                {
-                    return meetingName;
-                }
-                Console.Write("You have to enter meeting name: ");
-            }
-            while (true);
+            Console.Write("Please enter meeting name: ");
+            return ReadString();
         }
         public static string ReadMeetingDescription()
         {
-            var meetingDescription = "";
-            do
-            {
-                try
-                {
-                    meetingDescription = Console.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                if (meetingDescription.Length > 0)
-                {
-                    return meetingDescription;
-                }
-                Console.Write("You have to enter meeting description: ");
-            }
-            while (true);
+            Console.Write("Please enter description: ");
+            return ReadString();
         }
         public static List<Meeting> GetMeetingList()
         {
@@ -254,12 +188,12 @@ namespace MeetingsApp.Services
         }
         public static void AddPersonToParticipantsList()
         {
-            Console.Write("Please, select the meeting for replenishment: ");
             var meetingName = ReadMeetingName();
             if (CheckMeetingExist(meetingName))
             {
                 var meetingList = new ReadFile().GetFileData();
                 var meeting = GetMeetingList().FirstOrDefault(m => m.Name == meetingName);
+                DisplayParticipantsList(meeting);
                 var person = new Person(ReadName(), ReadSurname());
                 if(CheckPersonExist(meeting, person))
                 {
@@ -282,12 +216,12 @@ namespace MeetingsApp.Services
         }
         public static void DeletePersonFromParticipantsList()
         {
-            Console.Write("Please, select the meeting for removing: ");
             var meetingName = ReadMeetingName();
             if (CheckMeetingExist(meetingName))
             {
                 var meetingList = new ReadFile().GetFileData();
                 var meeting = GetMeetingList().FirstOrDefault(m => m.Name == meetingName);
+                DisplayParticipantsList(meeting);
                 var person = new Person(ReadName(), ReadSurname());
                 if (!CheckPersonExist(meeting, person))
                 {
@@ -322,6 +256,92 @@ namespace MeetingsApp.Services
                 return true;
             }
             return false;
+        }
+        public static void DisplayParticipantsList(Meeting meeting)
+        {
+            Console.WriteLine("Participants list:");
+            foreach(var participant in meeting.Participants)
+            {
+                Console.WriteLine($"\t{participant}");
+            }
+        }
+        public static void FilterByDescription()
+        {
+            Console.WriteLine("Please, enter string to filter:");
+            var seachString = ReadString();
+            DispalyMeetingList(GetMeetingList()
+                .Where(m => m.Description.Contains(seachString))
+                .ToList());
+        }
+        public static void FilterByOrganizer()
+        {
+            Console.Write("Please, enter organizer to filter: ");
+            var organizer = new Person(ReadName(), ReadSurname());
+            DispalyMeetingList(GetMeetingList()
+                .Where(m => m.ResponsiblePerson.Name == organizer.Name && m.ResponsiblePerson.Surname == organizer.Surname)
+                .ToList());
+        }
+        public static void FilterByCategory()
+        {
+            Console.Write("Please, select category to filter: ");
+            var category = SelectMeetingCathegory();
+            DispalyMeetingList(GetMeetingList()
+                .Where(m => m.category == category)
+                .ToList());
+        }
+        public static void FilterByType()
+        {
+            Console.Write("Please, select type to filter: ");
+            var meetingType = SelectMeetingType();
+            DispalyMeetingList(GetMeetingList()
+                .Where(m => m.meetingType == meetingType)
+                .ToList());
+        }
+        public static void FilterByDate()
+        {
+            Console.Write("Please, enter the from what date filter: ");
+            var minDate = ReadDate();
+            Console.Write("Please, enter the till what date filter: ");
+            var maxDate = ReadEndDate(minDate);
+            DispalyMeetingList(GetMeetingList()
+                .Where(m => (m.startDate >= minDate && m.startDate <= maxDate) || (m.endDate >= minDate && m.endDate <= maxDate))
+                .ToList());
+        }
+        public static string ReadString()
+        {
+            do
+            {
+                try
+                {
+                    var inputString = Console.ReadLine();
+                    if (inputString.Length > 0)
+                    {
+                        return inputString;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                Console.Write("Wrong input! try again: ");
+            }
+            while (true);
+        }
+        public static int ReadInteger()
+        {
+            do
+            {
+                try
+                {
+                    return int.Parse(Console.ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                Console.Write("Wrong input! try again: ");
+            }
+            while (true);
         }
     }
 }
