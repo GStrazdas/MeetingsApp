@@ -28,9 +28,8 @@ namespace MeetingsApp.Model
         {
             Console.Clear();
             Controle.Title();
-            Console.Write("Please enter meeting name: ");
             var name = Service.ReadMeetingName();
-            Console.Write("Please enter description: ");
+            
             var description = Service.ReadMeetingDescription();
             Category category = Service.SelectMeetingCathegory();
             MeetingType meetingType = Service.SelectMeetingType();
@@ -47,7 +46,7 @@ namespace MeetingsApp.Model
         public override string ToString()
         {
             return $"Meeting: {Name} - {Description} ({category}, {meetingType}). Organizer: {ResponsiblePerson}" +
-                $"\n\tstarts at {startDate} : ends at {endDate}";
+                $"\n\tstarts at {startDate} : ends at {endDate} \tParticipants: {Participants.Count()}";
         }
     }
 }
